@@ -1,0 +1,28 @@
+https://skillsforall.com/resources/lab-downloads
+Router0 DCE
+enable
+show controllers se0/3/0
+conf t
+int se0/3/0
+clock rate 250000
+encapsulation ppp
+ip add 192.168.1.2 255.255.255.252
+no shut
+exit 
+exit
+show int se0/3/0
+
+Router1
+enable
+show controllers se0/3/0
+conf t
+int se0/3/0
+encapsulation ppp
+ip add 192.168.1.6 255.255.255.252
+no shut
+exit 
+exit
+
+test ping in router cli 
+ping 192.168.1.6
+ping 192.168.1.2

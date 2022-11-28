@@ -1,0 +1,56 @@
+https://skillsforall.com/resources/lab-downloads
+Router1
+enable
+config t
+int gig0/0
+ip add 192.168.1.1 255.255.255.0
+no shut
+exit
+int se0/0/0
+ip address 10.0.0.1 255.0.0.0
+no shut 
+ip route 0.0.0.0 0.0.0.0 10.0.0.2 
+interface tunnel 200
+ip address 172.18.1.1 255.255.0.0
+tunnel source se0/0/0
+tunnel destination 20.0.0.2
+no shut 
+ip route 192.168.2.0 255.255.255.0 172.18.1.2
+
+Router2
+enable
+config t
+int se0/0/0
+ip add 10.0.0.2 255.0.0.0
+no shut
+exit
+int se0/0/1
+ip add 20.0.0.1 255.0.0.0
+no shut 
+exit
+
+Router3
+enable
+config t
+int se0/1/0
+ip add 20.0.0.2 255.0.0.0
+no shut
+exit
+int gig0/0
+ip add 192.168.2.1 255.255.255.0
+no shut
+ip route 0.0.0.0 0.0.0.0 20.0.0.1 
+interface tunnel 400
+ip address 172.18.1.2 255.255.0.0
+tunnel source se0/1/0
+tunnel destination 10.0.0.1
+no shut 
+ip route 192.168.1.0 255.255.255.0 172.18.1.1
+
+test inside router cli
+ping 20.0.0.2
+ping 10.0.0.1
+R1 ping 172.18.1.2 
+R2 ping 172.18.1.1 
+R1 show interfaces Tunnel 200 
+pc tracert 192.168.2.2

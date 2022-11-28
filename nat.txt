@@ -1,0 +1,35 @@
+https://skillsforall.com/resources/lab-downloads
+Router0
+en
+conf t
+ip nat inside source static 10.0.0.10 50.0.0.10
+ip nat inside source static 10.0.0.20 50.0.0.20
+ip nat inside source static 10.0.0.30 50.0.0.30
+interface gigabitethernet 0/0
+ip nat inside
+exit
+interface serial 0/0/0
+ip nat outside
+exit
+ip route 200.0.0.0 255.0.0.0 100.0.0.2
+no shutdown
+
+Router1
+en
+conf t
+ip nat inside source static 192.168.1.10 200.0.0.10
+interface gigabitethernet 0/0
+ip nat inside
+exit
+interface serial 0/0/0
+ip nat outside
+exit
+ip route 50.0.0.0 255.0.0.0 100.0.0.1
+no shutdown
+
+test
+ipconfig
+ping 200.0.0.10
+ping 192.168.1.10
+on router
+show ip nat translation
